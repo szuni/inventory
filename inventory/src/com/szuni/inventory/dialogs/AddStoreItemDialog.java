@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -19,6 +22,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.szuni.inventory.dao.StoreItemDao;
 import com.szuni.inventory.model.StoreItem;
 import com.szuni.inventory.model.Unit;
 
@@ -143,6 +147,13 @@ public class AddStoreItemDialog extends AbstractDialog {
 	
 		if (StringUtils.isBlank(barcodeField.getText())) {
 			setError(barcodeField, "Barcode is empty");
+		} else {
+			try {
+				StoreItemDao.getInstance().findByBarcode(barcodeField.getText());
+				setError(barcodeField, "Barcode must be unique");
+			} catch(NonUniqueResultException | NoResultException e) {
+				//No problem
+			}
 		}
 
 		if (StringUtils.isBlank(nameField.getText())) {

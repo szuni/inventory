@@ -28,7 +28,7 @@ public class Activator implements BundleActivator {
 			BundleContext context = Activator.getContext();
 			ServiceReference<PersistenceProvider> serviceReference = context.getServiceReference(PersistenceProvider.class);
 			PersistenceProvider persistenceProvider = context.getService(serviceReference);
-			EntityManagerFactory factory = persistenceProvider.createEntityManagerFactory("inventoryEmbedded", null);
+			EntityManagerFactory factory = persistenceProvider.createEntityManagerFactory("inventory", null);
 			em = factory.createEntityManager();
 		} catch (Exception e) {
 			e.printStackTrace();
